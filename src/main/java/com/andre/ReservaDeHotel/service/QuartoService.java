@@ -25,6 +25,8 @@ public class QuartoService {
 
     validarSeQuartoExiste(dto);
 
+    quarto.setDisponivel(true);
+
     copyDtoToEntity(dto, quarto);
     quartoRepository.save(quarto);
 
@@ -74,6 +76,7 @@ public class QuartoService {
     entity.setNumeroQuarto(dto.getNumeroQuarto());
     entity.setPrecoNoite(dto.getPrecoNoite());
     entity.setTipoQuarto(dto.getTipoQuarto());
+
   }
 
 

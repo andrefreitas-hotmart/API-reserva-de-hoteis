@@ -1,6 +1,5 @@
 package com.andre.ReservaDeHotel.repository;
 
-import com.andre.ReservaDeHotel.DTO.ReservaDTO;
 import com.andre.ReservaDeHotel.entity.Reserva;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

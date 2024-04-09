@@ -1,6 +1,7 @@
 package com.andre.ReservaDeHotel.entity;
 
 import com.andre.ReservaDeHotel.entity.enums.StatusReserva;
+import com.andre.ReservaDeHotel.entity.enums.TipoQuarto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,9 +27,13 @@ public class Reserva {
   private StatusReserva statusReserva;
   private int precoInicialReserva;
 
-  @ManyToOne
-  @JoinColumn(name = "quarto_id")
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "quarto_id",referencedColumnName = "id")
   private Quarto quarto;
 
+  private TipoQuarto tipoQuartoEscolhido;
+  private Double precoMaximoQuarto;
 
+
+  // Na hora de fazer o checkin eu seto o quarto na reserva?
 }

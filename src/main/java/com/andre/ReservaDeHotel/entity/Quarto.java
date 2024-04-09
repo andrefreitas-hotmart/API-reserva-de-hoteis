@@ -18,6 +18,6 @@ public class Quarto {
   private TipoQuarto tipoQuarto;
   private String descricaoQuarto;
   private Double precoNoite;
-
+  private Boolean disponivel;
 
 }

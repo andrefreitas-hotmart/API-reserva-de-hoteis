@@ -1,7 +1,7 @@
 package com.andre.ReservaDeHotel.service;
 
 import com.andre.ReservaDeHotel.DTO.QuartoDTO;
-import com.andre.ReservaDeHotel.DTO.ReservaDTO;
+import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
 import com.andre.ReservaDeHotel.entity.Quarto;
 import com.andre.ReservaDeHotel.entity.Reserva;
 import com.andre.ReservaDeHotel.entity.User;
@@ -9,8 +9,6 @@ import com.andre.ReservaDeHotel.entity.enums.StatusReserva;
 import com.andre.ReservaDeHotel.entity.enums.TipoQuarto;
 import com.andre.ReservaDeHotel.repository.QuartoRepository;
 import com.andre.ReservaDeHotel.repository.ReservaRepository;
-import com.andre.ReservaDeHotel.service.exceptions.QuartoIndisponivelException;
-import com.andre.ReservaDeHotel.service.exceptions.ReservaNaoEstaConfirmadaException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +20,6 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -44,7 +41,7 @@ public class ReservaServiceTest {
   }
 
   private QuartoDTO quarto;
-  private ReservaDTO reserva;
+  private ReservaRequestDTO reserva;
   private Reserva r;
   private LocalDate dataFinalReserva;
   private LocalDate diaDaReserva;
@@ -57,7 +54,7 @@ public class ReservaServiceTest {
     dataFinalReserva = LocalDate.of(2024, 3, 30);
     diaDaReserva = LocalDate.of(2024, 3, 1);
 
-    reserva = new ReservaDTO(1L, 1L, diaDaReserva, dataFinalReserva, 1L, StatusReserva.AGUARDANDO_CHECKIN,100);
+    reserva = new ReservaRequestDTO(1L, 1L, diaDaReserva, dataFinalReserva, 1L, StatusReserva.AGUARDANDO_CHECKIN,100);
     r = new Reserva(1L, new User(), diaDaReserva, dataFinalReserva, StatusReserva.AGUARDANDO_CHECKIN,100, new Quarto());
 
   }
@@ -94,16 +91,16 @@ public class ReservaServiceTest {
 
     when(reservaRepository.findReservasByQuartoId(1L)).thenReturn(reservas);
 
-    ReservaDTO reserveMeioAteMeio = reservaBuilder(LocalDate.of(2024, 3, 10),
+    ReservaRequestDTO reserveMeioAteMeio = reservaBuilder(LocalDate.of(2024, 3, 10),
         LocalDate.of(2024, 3, 15));
 
-    ReservaDTO reservaAntesAteDepois = reservaBuilder(LocalDate.of(2024, 2, 10),
+    ReservaRequestDTO reservaAntesAteDepois = reservaBuilder(LocalDate.of(2024, 2, 10),
         LocalDate.of(2024, 4, 20));
 
-    ReservaDTO reservaMeioAteDepois = reservaBuilder(LocalDate.of(2024, 3, 15),
+    ReservaRequestDTO reservaMeioAteDepois = reservaBuilder(LocalDate.of(2024, 3, 15),
         LocalDate.of(2024,4,1));
 
-    ReservaDTO reservaAntesAteMeio = reservaBuilder(LocalDate.of(2024, 2, 10),
+    ReservaRequestDTO reservaAntesAteMeio = reservaBuilder(LocalDate.of(2024, 2, 10),
         LocalDate.of(2024,3,15));
 
 
@@ -114,8 +111,8 @@ public class ReservaServiceTest {
 
   }
 
-  public ReservaDTO reservaBuilder(LocalDate diaDaReserva, LocalDate dataFinalReserva) {
-    return new ReservaDTO(1L, 1L, diaDaReserva,dataFinalReserva,1L,StatusReserva.AGUARDANDO_CHECKIN,100);
+  public ReservaRequestDTO reservaBuilder(LocalDate diaDaReserva, LocalDate dataFinalReserva) {
+    return new ReservaRequestDTO(1L, 1L, diaDaReserva,dataFinalReserva,1L,StatusReserva.AGUARDANDO_CHECKIN,100);
   }
 
 }

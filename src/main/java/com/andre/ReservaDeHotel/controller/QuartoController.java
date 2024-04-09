@@ -1,7 +1,6 @@
 package com.andre.ReservaDeHotel.controller;
 
 import com.andre.ReservaDeHotel.DTO.QuartoDTO;
-import com.andre.ReservaDeHotel.DTO.ReservaDTO;
 import com.andre.ReservaDeHotel.service.QuartoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

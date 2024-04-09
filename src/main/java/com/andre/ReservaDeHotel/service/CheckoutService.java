@@ -3,7 +3,7 @@ package com.andre.ReservaDeHotel.service;
 import com.andre.ReservaDeHotel.DTO.CheckoutRequestDTO;
 import com.andre.ReservaDeHotel.DTO.response.CheckoutResponseDTO;
 import com.andre.ReservaDeHotel.DTO.QuartoDTO;
-import com.andre.ReservaDeHotel.DTO.ReservaDTO;
+import com.andre.ReservaDeHotel.DTO.response.ReservaResponseDTO;
 import com.andre.ReservaDeHotel.entity.Checkout;
 import com.andre.ReservaDeHotel.entity.Quarto;
 import com.andre.ReservaDeHotel.entity.Reserva;
@@ -20,6 +20,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+
+import static com.andre.ReservaDeHotel.entity.Checkout.copyDtoToEntity;
+import static com.andre.ReservaDeHotel.entity.Checkout.copyDtoToEntityAndSave;
+import static com.andre.ReservaDeHotel.service.ReservaService.checarReservaConfirmada;
+import static com.andre.ReservaDeHotel.service.ReservaService.checarReservaNaoExiste;
 
 @Service
 public class CheckoutService {
@@ -38,16 +43,14 @@ public class CheckoutService {
   public CheckoutResponseDTO checkout (Long reservaId, CheckoutRequestDTO checkoutRequestDTO) throws Exception{
 
     Optional<Reserva> reservaOptional = reservaRepository.findById(reservaId);
-    
-    if(reservaOptional.isEmpty()){
-      throw new ReservaNaoExisteException("Reserva nao existe");
-    }
+
+    checarReservaNaoExiste(reservaOptional);
 
     Reserva reserva = reservaOptional.get();
 
-    if (!reserva.getStatusReserva().equals(StatusReserva.ATIVA)) {
-      throw new ReservaNaoEstaConfirmadaException("A reserva nao esta confirmada");
-    }
+    reserva.getQuarto().setDisponivel(true);
+
+    checarReservaConfirmada(reserva);
 
     reserva.setStatusReserva(StatusReserva.ENCERRADA);
 
@@ -55,7 +58,7 @@ public class CheckoutService {
 
     Quarto quarto = quartoRepository.getReferenceById(reserva.getQuarto().getId());
 
-    ReservaDTO reservaDTO = new ReservaDTO(reserva);
+    ReservaResponseDTO reservaDTO = new ReservaResponseDTO(reserva);
     QuartoDTO quartoDTO = new QuartoDTO(quarto);
 
     LocalDate dataDoCheckout = checkoutRequestDTO.getDataCheckout();
@@ -80,19 +83,14 @@ public class CheckoutService {
 
     Checkout checkout = new Checkout();
 
-    copyDtoToEntityAndSave(checkout,checkoutResponseDTO, reserva);
+    copyDtoToEntity(checkout,checkoutResponseDTO, reserva);
+    checkoutRepository.save(checkout);
 
     return checkoutResponseDTO;
 
   }
 
-  private void copyDtoToEntityAndSave(Checkout checkout, CheckoutResponseDTO dto, Reserva reserva) {
-    checkout.setReserva(reserva);
-    checkout.setMulta(dto.getMulta());
-    checkout.setDiasPermanencia(dto.getDiasPermanencia());
-    checkout.setPrecoTotal(dto.getPrecoTotal());
-    checkoutRepository.save(checkout);
-  }
+
 
   private static void validaDiasDePermanencia(long diasDePermanencia) {
     if (diasDePermanencia == 0) {
@@ -100,13 +98,13 @@ public class CheckoutService {
     }
   }
 
-  private static void validaDataCheckout(LocalDate dataDoCheckout, ReservaDTO reservaDTO) {
-    if(dataDoCheckout.isBefore(reservaDTO.getDiaDaReserva())) {
+  private static void validaDataCheckout(LocalDate dataDoCheckout, ReservaResponseDTO reservaDTO) {
+    if (dataDoCheckout.isBefore(reservaDTO.getDiaDaReserva())) {
       throw new CheckoutDateException("Voce deve fazer o checkout apenas depois do dia da reserva");
     }
   }
 
-  private static CheckoutResponseDTO buildCheckoutDTO( double multa, long diasDePermanencia, ReservaDTO reservaDTO, double precototal) {
+  private static CheckoutResponseDTO buildCheckoutDTO(double multa, long diasDePermanencia, ReservaResponseDTO reservaDTO, double precototal) {
     CheckoutResponseDTO checkoutDTO = new CheckoutResponseDTO();
 
     checkoutDTO.setMulta(multa);
@@ -117,15 +115,15 @@ public class CheckoutService {
     return checkoutDTO;
   }
 
-  public long calculaDiasPermanencia(ReservaDTO reservaDTO, LocalDate diaDoCheckout) {
+  public long calculaDiasPermanencia(ReservaResponseDTO reservaDTO, LocalDate diaDoCheckout) {
     return reservaDTO.getDiaDaReserva().until(diaDoCheckout, ChronoUnit.DAYS);
   }
 
-  public long calcularDiasDeAtraso(ReservaDTO reservaDTO, LocalDate diaDoCheckout) {
+  public long calcularDiasDeAtraso(ReservaResponseDTO reservaDTO, LocalDate diaDoCheckout) {
     return reservaDTO.getDataFinalReserva().until(diaDoCheckout, ChronoUnit.DAYS);
   }
 
-  public boolean checarAtraso(ReservaDTO reservaDTO, LocalDate diaDoCheckout) {
+  public boolean checarAtraso(ReservaResponseDTO reservaDTO, LocalDate diaDoCheckout) {
     return reservaDTO.getDataFinalReserva().isBefore(diaDoCheckout);
   }
 

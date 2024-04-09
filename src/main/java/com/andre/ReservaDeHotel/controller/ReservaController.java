@@ -1,6 +1,7 @@
 package com.andre.ReservaDeHotel.controller;
 
-import com.andre.ReservaDeHotel.DTO.ReservaDTO;
+import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
+import com.andre.ReservaDeHotel.DTO.response.ReservaResponseDTO;
 import com.andre.ReservaDeHotel.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +17,19 @@ public class ReservaController {
   private ReservaService reservaService;
 
   @PostMapping
-  public ResponseEntity<ReservaDTO> insert(@RequestBody ReservaDTO dto) {
-    try {
-      dto = reservaService.insert(dto);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-
-    return ResponseEntity.ok(dto);
+  public ResponseEntity<ReservaResponseDTO> insert(@RequestBody ReservaRequestDTO dto) throws Exception {
+    ReservaResponseDTO dtoResponse = reservaService.insert(dto);
+    return ResponseEntity.ok(dtoResponse);
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<ReservaDTO> findById(@PathVariable Long id) {
-    ReservaDTO dto = reservaService.findById(id);
+  public ResponseEntity<ReservaResponseDTO> findById(@PathVariable Long id) {
+    ReservaResponseDTO dto = reservaService.findById(id);
     return ResponseEntity.ok(dto);
   }
 
   @GetMapping
-  public ResponseEntity<List<ReservaDTO>> findAll(){
+  public ResponseEntity<List<ReservaResponseDTO>> findAll(){
     return ResponseEntity.ok(reservaService.findAll());
   }
 
@@ -44,7 +40,7 @@ public class ReservaController {
   }
 
   @PutMapping(value = "/{id}")
-  public ResponseEntity<ReservaDTO> update(@RequestBody ReservaDTO dto, @PathVariable Long id) {
+  public ResponseEntity<ReservaRequestDTO> update(@RequestBody ReservaRequestDTO dto, @PathVariable Long id) {
     return ResponseEntity.ok(reservaService.update(dto, id));
   }
 

@@ -1,11 +1,9 @@
 package com.andre.ReservaDeHotel.service;
 
-import com.andre.ReservaDeHotel.DTO.ReservaDTO;
-import com.andre.ReservaDeHotel.entity.Reserva;
+import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
 import com.andre.ReservaDeHotel.entity.enums.StatusReserva;
 import com.andre.ReservaDeHotel.service.exceptions.CheckinAntesDaDataException;
 import com.andre.ReservaDeHotel.service.exceptions.ReservaJaConfirmada;
-import com.andre.ReservaDeHotel.service.exceptions.ReservaNaoEstaConfirmadaException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,7 +29,7 @@ public class CheckinServiceTest {
     MockitoAnnotations.initMocks(this);
   }
 
-  private static ReservaDTO reserva;
+  private static ReservaRequestDTO reserva;
 
   @BeforeEach
   void init() {
@@ -39,7 +37,7 @@ public class CheckinServiceTest {
     LocalDate dataFinalReserva = LocalDate.of(2024, 3, 20);
     LocalDate diaDaReserva = LocalDate.of(2024, 3, 10);
 
-    reserva = new ReservaDTO(1L, 1L, diaDaReserva, dataFinalReserva, 1L, StatusReserva.AGUARDANDO_CHECKIN,100);
+    reserva = new ReservaRequestDTO(1L, 1L, diaDaReserva, dataFinalReserva, 1L, StatusReserva.AGUARDANDO_CHECKIN,100);
   }
 
   @Test

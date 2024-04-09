@@ -18,4 +18,7 @@ public class Checkin {
   @OneToOne
   @JoinColumn(name = "reserva_id", referencedColumnName = "id")
   private Reserva reserva;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "quarto_id",referencedColumnName = "id")
+  private Quarto quarto;
 }

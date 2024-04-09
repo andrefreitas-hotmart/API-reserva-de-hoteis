@@ -16,6 +16,7 @@ public class QuartoDTO {
   private TipoQuarto tipoQuarto;
   private String descricaoQuarto;
   private Double precoNoite;
+  private Boolean disponivel;
 
   public QuartoDTO(Quarto entity){
     this.id = entity.getId();
@@ -23,6 +24,7 @@ public class QuartoDTO {
     this.tipoQuarto = entity.getTipoQuarto();
     this.descricaoQuarto = entity.getDescricaoQuarto();
     this.precoNoite = entity.getPrecoNoite();
+    this.disponivel = entity.getDisponivel();
   }
 
 }

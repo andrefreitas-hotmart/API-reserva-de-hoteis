@@ -2,7 +2,7 @@ package com.andre.ReservaDeHotel.service;
 
 import com.andre.ReservaDeHotel.DTO.CheckoutRequestDTO;
 import com.andre.ReservaDeHotel.DTO.QuartoDTO;
-import com.andre.ReservaDeHotel.DTO.ReservaDTO;
+import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
 import com.andre.ReservaDeHotel.DTO.UserDTO;
 import com.andre.ReservaDeHotel.entity.Quarto;
 import com.andre.ReservaDeHotel.entity.Reserva;
@@ -33,7 +33,7 @@ class CheckoutServiceTest {
   @InjectMocks
   private CheckoutService checkoutService;
 
-  private static ReservaDTO reserva;
+  private static ReservaRequestDTO reserva;
   private UserDTO user;
   private QuartoDTO quarto;
 
@@ -45,7 +45,7 @@ class CheckoutServiceTest {
     LocalDate dataFinalReserva = LocalDate.of(2024, 3, 30);
     LocalDate diaDaReserva = LocalDate.of(2024, 3, 1);
 
-    reserva = new ReservaDTO(1L, 1L, diaDaReserva, dataFinalReserva, 1L, StatusReserva.AGUARDANDO_CHECKIN,100);
+    reserva = new ReservaRequestDTO(1L, 1L, diaDaReserva, dataFinalReserva, 1L, StatusReserva.AGUARDANDO_CHECKIN,100);
     user = new UserDTO(1L, "Tester", "tester@gmail.com", "123456");
 
   }

@@ -1,5 +1,6 @@
 package com.andre.ReservaDeHotel.entity;
 
+import com.andre.ReservaDeHotel.DTO.response.CheckoutResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +20,12 @@ public class Checkout {
   private Double multa;
   private Double precoTotal;
   private Long diasPermanencia;
+
+  public static void copyDtoToEntity(Checkout checkout, CheckoutResponseDTO dto, Reserva reserva) {
+    checkout.setReserva(reserva);
+    checkout.setMulta(dto.getMulta());
+    checkout.setDiasPermanencia(dto.getDiasPermanencia());
+    checkout.setPrecoTotal(dto.getPrecoTotal());
+  }
+
 }
