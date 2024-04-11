@@ -1,5 +1,6 @@
 package com.andre.ReservaDeHotel.entity;
 
+import com.andre.ReservaDeHotel.DTO.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +25,12 @@ public class User {
 
   @OneToMany(mappedBy = "user")
   private List<Reserva> reservas;
+
+  public static void copyDtoToEntity(UserDTO dto, User entity){
+    entity.setName(dto.getName());
+    entity.setEmail(dto.getEmail());
+    entity.setPassword(dto.getPassword());
+  }
+
 
 }

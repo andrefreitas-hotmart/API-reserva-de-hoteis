@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class ReservaServiceTest {
   @InjectMocks
-  private ReservaService reservaService;
+  private ReservaServiceImpl reservaService;
 
   @Mock
   private QuartoRepository quartoRepository;

@@ -1,8 +1,8 @@
 package com.andre.ReservaDeHotel.controller;
 
 import com.andre.ReservaDeHotel.DTO.UserDTO;
-import com.andre.ReservaDeHotel.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.andre.ReservaDeHotel.service.interfaces.IUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,11 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
+@RequiredArgsConstructor
 public class UserController {
 
-  @Autowired
-  private UserService userService;
-
+  private final IUserService userService;
 
   @PostMapping
   public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto){

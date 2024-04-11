@@ -19,11 +19,10 @@ public class ReservaRequestDTO {
   private Long userId;
   private LocalDate diaDaReserva;
   private LocalDate dataFinalReserva;
-
   private TipoQuarto tipoQuartoEscolhido;
   private Double precoMaximoQuarto;
 
-  public ReservaRequestDTO(Reserva entity){
+  public ReservaRequestDTO(Reserva entity) {
     this.id = entity.getId();
     this.userId = entity.getUser().getId();
     this.diaDaReserva = entity.getDiaDaReserva();

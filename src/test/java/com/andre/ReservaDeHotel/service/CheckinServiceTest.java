@@ -20,9 +20,9 @@ import static org.mockito.Mockito.when;
 public class CheckinServiceTest {
 
   @InjectMocks
-  private CheckinService checkinService;
+  private CheckinServiceImpl checkinService;
   @Mock
-  private ReservaService reservaService;
+  private ReservaServiceImpl reservaService;
 
   @BeforeEach
   void setUp() {

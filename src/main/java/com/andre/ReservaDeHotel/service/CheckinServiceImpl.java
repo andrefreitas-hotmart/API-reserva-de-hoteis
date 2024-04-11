@@ -1,18 +1,17 @@
 package com.andre.ReservaDeHotel.service;
 
 import com.andre.ReservaDeHotel.DTO.CheckinDTO;
-import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
 import com.andre.ReservaDeHotel.DTO.response.ReservaResponseDTO;
 import com.andre.ReservaDeHotel.entity.Checkin;
 import com.andre.ReservaDeHotel.entity.Quarto;
 import com.andre.ReservaDeHotel.entity.Reserva;
-import com.andre.ReservaDeHotel.entity.enums.StatusReserva;
 import com.andre.ReservaDeHotel.repository.CheckinRepository;
 import com.andre.ReservaDeHotel.repository.QuartoRepository;
 import com.andre.ReservaDeHotel.repository.ReservaRepository;
 import com.andre.ReservaDeHotel.service.exceptions.CheckinAntesDaDataException;
 import com.andre.ReservaDeHotel.service.exceptions.QuartoIndisponivelException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.andre.ReservaDeHotel.service.interfaces.ICheckinService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,15 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CheckinService {
+@AllArgsConstructor
+public class CheckinServiceImpl implements ICheckinService {
 
-  @Autowired
   private ReservaRepository reservaRepository;
-  @Autowired
-  private ReservaService reservaService;
-  @Autowired
+  private ReservaServiceImpl reservaService;
   private QuartoRepository quartoRepository;
-  @Autowired
   private CheckinRepository checkinRepository;
 
   public CheckinDTO checkin(Long id) {
@@ -37,7 +33,7 @@ public class CheckinService {
 
     validarDataReserva(reservaDTO,LocalDate.now());
 
-    confirmarReserva(reserva);
+    reservaService.confirmarReserva(reserva);
 
     Checkin checkin = new Checkin();
 
@@ -71,10 +67,6 @@ public class CheckinService {
 
   }
 
-  public void confirmarReserva(Reserva reserva) {
-      reserva.setStatusReserva(StatusReserva.ATIVA);
-      reservaRepository.save(reserva);
-  }
 
   public void validarDataReserva(ReservaResponseDTO reserva, LocalDate data) {
     if (reserva.getDiaDaReserva().isAfter(data)) {

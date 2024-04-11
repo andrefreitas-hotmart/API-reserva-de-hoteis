@@ -13,4 +13,6 @@ public interface QuartoRepository extends JpaRepository<Quarto, Long> {
 
   Optional<Quarto> findQuartoByDadosDaReserva(Double precoMaximoQuarto, TipoQuarto tipoQuarto);
 
+
+
 }

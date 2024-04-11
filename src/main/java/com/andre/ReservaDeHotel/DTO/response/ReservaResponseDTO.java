@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReservaResponseDTO {
+
   private Long id;
   private Long userId;
   private LocalDate diaDaReserva;
@@ -24,7 +25,7 @@ public class ReservaResponseDTO {
   private TipoQuarto tipoQuartoEscolhido;
   private Double precoMaximoQuarto;
 
-  public ReservaResponseDTO(Reserva entity){
+  public ReservaResponseDTO(Reserva entity) {
     this.id = entity.getId();
     this.userId = entity.getUser().getId();
     this.diaDaReserva = entity.getDiaDaReserva();
@@ -35,5 +36,4 @@ public class ReservaResponseDTO {
     this.precoMaximoQuarto = entity.getPrecoMaximoQuarto();
     this.quarto = entity.getQuarto();
   }
-
 }

@@ -2,8 +2,8 @@ package com.andre.ReservaDeHotel.controller;
 
 import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
 import com.andre.ReservaDeHotel.DTO.response.ReservaResponseDTO;
-import com.andre.ReservaDeHotel.service.ReservaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.andre.ReservaDeHotel.service.interfaces.IReservaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,13 +11,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/reserva")
+@RequiredArgsConstructor
 public class ReservaController {
 
-  @Autowired
-  private ReservaService reservaService;
+  private final IReservaService reservaService;
 
   @PostMapping
-  public ResponseEntity<ReservaResponseDTO> insert(@RequestBody ReservaRequestDTO dto) throws Exception {
+  public ResponseEntity<ReservaResponseDTO> insert(@RequestBody ReservaRequestDTO dto) {
     ReservaResponseDTO dtoResponse = reservaService.insert(dto);
     return ResponseEntity.ok(dtoResponse);
   }

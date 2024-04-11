@@ -12,9 +12,8 @@ import com.andre.ReservaDeHotel.repository.CheckoutRepository;
 import com.andre.ReservaDeHotel.repository.QuartoRepository;
 import com.andre.ReservaDeHotel.repository.ReservaRepository;
 import com.andre.ReservaDeHotel.service.exceptions.CheckoutDateException;
-import com.andre.ReservaDeHotel.service.exceptions.ReservaNaoEstaConfirmadaException;
-import com.andre.ReservaDeHotel.service.exceptions.ReservaNaoExisteException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.andre.ReservaDeHotel.service.interfaces.ICheckoutService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,35 +21,27 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static com.andre.ReservaDeHotel.entity.Checkout.copyDtoToEntity;
-import static com.andre.ReservaDeHotel.entity.Checkout.copyDtoToEntityAndSave;
-import static com.andre.ReservaDeHotel.service.ReservaService.checarReservaConfirmada;
-import static com.andre.ReservaDeHotel.service.ReservaService.checarReservaNaoExiste;
 
 @Service
-public class CheckoutService {
+@AllArgsConstructor
+public class CheckoutServiceImpl implements ICheckoutService {
 
-  @Autowired
   private ReservaRepository reservaRepository;
-  @Autowired
   private QuartoRepository quartoRepository;
-  @Autowired
-  private QuartoService quartoService;
-  @Autowired
-  private ReservaService reservaService;
-  @Autowired
+  private ReservaServiceImpl reservaService;
   private CheckoutRepository checkoutRepository;
 
-  public CheckoutResponseDTO checkout (Long reservaId, CheckoutRequestDTO checkoutRequestDTO) throws Exception{
+  public CheckoutResponseDTO checkout (Long reservaId, CheckoutRequestDTO checkoutRequestDTO) {
 
     Optional<Reserva> reservaOptional = reservaRepository.findById(reservaId);
 
-    checarReservaNaoExiste(reservaOptional);
+    reservaService.checarReservaNaoExiste(reservaOptional);
 
     Reserva reserva = reservaOptional.get();
 
     reserva.getQuarto().setDisponivel(true);
 
-    checarReservaConfirmada(reserva);
+    reservaService.checarReservaConfirmada(reserva);
 
     reserva.setStatusReserva(StatusReserva.ENCERRADA);
 
@@ -76,7 +67,6 @@ public class CheckoutService {
       multa = calculaMulta(diasDeAtraso, quartoDTO);
     }
 
-
     double precototal = calculaPrecoTotal(diasDePermanencia, multa, quartoDTO);
 
     CheckoutResponseDTO checkoutResponseDTO = buildCheckoutDTO(multa, diasDePermanencia, reservaDTO, precototal);
@@ -92,19 +82,19 @@ public class CheckoutService {
 
 
 
-  private static void validaDiasDePermanencia(long diasDePermanencia) {
+  private void validaDiasDePermanencia(long diasDePermanencia) {
     if (diasDePermanencia == 0) {
       throw new CheckoutDateException("Você nao pode fazer checkout no mesmo dia que fez a reserva");
     }
   }
 
-  private static void validaDataCheckout(LocalDate dataDoCheckout, ReservaResponseDTO reservaDTO) {
+  private void validaDataCheckout(LocalDate dataDoCheckout, ReservaResponseDTO reservaDTO) {
     if (dataDoCheckout.isBefore(reservaDTO.getDiaDaReserva())) {
       throw new CheckoutDateException("Voce deve fazer o checkout apenas depois do dia da reserva");
     }
   }
 
-  private static CheckoutResponseDTO buildCheckoutDTO(double multa, long diasDePermanencia, ReservaResponseDTO reservaDTO, double precototal) {
+  private CheckoutResponseDTO buildCheckoutDTO(double multa, long diasDePermanencia, ReservaResponseDTO reservaDTO, double precototal) {
     CheckoutResponseDTO checkoutDTO = new CheckoutResponseDTO();
 
     checkoutDTO.setMulta(multa);

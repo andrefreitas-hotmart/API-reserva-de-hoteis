@@ -31,7 +31,7 @@ class CheckoutServiceTest {
   private ReservaRepository reservaRepository;
 
   @InjectMocks
-  private CheckoutService checkoutService;
+  private CheckoutServiceImpl checkoutService;
 
   private static ReservaRequestDTO reserva;
   private UserDTO user;

@@ -2,7 +2,6 @@ package com.andre.ReservaDeHotel.service;
 
 import com.andre.ReservaDeHotel.DTO.QuartoDTO;
 import com.andre.ReservaDeHotel.entity.Quarto;
-import com.andre.ReservaDeHotel.entity.Reserva;
 import com.andre.ReservaDeHotel.entity.enums.TipoQuarto;
 import com.andre.ReservaDeHotel.repository.QuartoRepository;
 import com.andre.ReservaDeHotel.service.exceptions.QuartoJaExisteException;
@@ -13,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class QuartoServiceTest {
   }
 
   @InjectMocks
-  private QuartoService quartoService;
+  private QuartoServiceImpl quartoService;
   @Mock
   private QuartoRepository quartoRepository;
 

@@ -1,6 +1,6 @@
 package com.andre.ReservaDeHotel.cron;
 
-import com.andre.ReservaDeHotel.service.CheckinService;
+import com.andre.ReservaDeHotel.service.CheckinServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class ScheduledJob {
 
   @Autowired
-  private CheckinService checkinService;
+  private CheckinServiceImpl checkinService;
 
   @Scheduled(cron = "0 0 0 * * *")
   public void execute() {
