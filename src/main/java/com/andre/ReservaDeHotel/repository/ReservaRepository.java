@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
@@ -19,5 +20,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
   @Query(nativeQuery = true, value = "SELECT * FROM TB_RESERVA WHERE QUARTO_ID = ?1")
   List<Reserva> findReservasByQuartoId(Long id);
+
+
 
 }

@@ -2,9 +2,11 @@ package com.andre.ReservaDeHotel.service;
 
 import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
 import com.andre.ReservaDeHotel.DTO.response.ReservaResponseDTO;
+import com.andre.ReservaDeHotel.entity.Quarto;
 import com.andre.ReservaDeHotel.entity.Reserva;
 import com.andre.ReservaDeHotel.entity.User;
 import com.andre.ReservaDeHotel.entity.enums.StatusReserva;
+import com.andre.ReservaDeHotel.projections.QuartoProjection;
 import com.andre.ReservaDeHotel.repository.QuartoRepository;
 import com.andre.ReservaDeHotel.repository.ReservaRepository;
 import com.andre.ReservaDeHotel.repository.UserRepository;
@@ -12,10 +14,10 @@ import com.andre.ReservaDeHotel.service.exceptions.ReservaNaoEstaConfirmadaExcep
 import com.andre.ReservaDeHotel.service.exceptions.ReservaNaoExisteException;
 import com.andre.ReservaDeHotel.service.exceptions.ResourceNotFoundException;
 import com.andre.ReservaDeHotel.service.interfaces.IReservaService;
-import com.andre.ReservaDeHotel.utils.DataFInalDepoisDeHoje;
-import com.andre.ReservaDeHotel.utils.DataFinalDepoisDaReserva;
-import com.andre.ReservaDeHotel.utils.DiaDaReservaDepoisDeHoje;
-import com.andre.ReservaDeHotel.utils.ValidadorDatasReserva;
+import com.andre.ReservaDeHotel.strategy.DataFInalDepoisDeHoje;
+import com.andre.ReservaDeHotel.strategy.DataFinalDepoisDaReserva;
+import com.andre.ReservaDeHotel.strategy.DiaDaReservaDepoisDeHoje;
+import com.andre.ReservaDeHotel.strategy.ValidadorDatasReserva;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,7 @@ public class ReservaServiceImpl implements IReservaService {
   private ReservaRepository reservaRepository;
   private UserRepository userRepository;
   private ValidadorDatasReserva validadorDatasReserva;
+  private QuartoRepository quartoRepository;
 
   private static final int PRECO_INICIAL_RESERVA = 100;
 
@@ -44,6 +47,20 @@ public class ReservaServiceImpl implements IReservaService {
 
     var reserva = buildReserva(dto, user);
     reserva = reservaRepository.save(reserva);
+
+    Long quartoOptional = quartoRepository.existeQuartoDisponivel(dto.getDiaDaReserva(), dto.getDataFinalReserva());
+
+    System.out.println("Dia da reserva: " + dto.getDiaDaReserva() + " DataFinalReserva: " + dto.getDataFinalReserva());
+
+    if (dto.getDiaDaReserva() instanceof LocalDate) {
+      System.out.println("É uma data");
+    }
+
+    if (quartoOptional > 0) {
+      System.out.println("Terá um quarto presente nessa data");
+    } else {
+      System.out.println("Nao existira um quarto disponivel nessa data");
+    }
 
     return new ReservaResponseDTO(reserva);
   }
@@ -84,7 +101,6 @@ public class ReservaServiceImpl implements IReservaService {
     Reserva reserva = reservaRepository.getReferenceById(id);
 
     reserva.setDataFinalReserva(dto.getDataFinalReserva());
-    //reserva.setStatusReserva(dto.getStatusReserva());
 
     reservaRepository.save(reserva);
 

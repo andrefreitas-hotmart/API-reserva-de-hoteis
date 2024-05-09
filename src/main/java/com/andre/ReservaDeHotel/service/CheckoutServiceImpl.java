@@ -32,20 +32,21 @@ public class CheckoutServiceImpl implements ICheckoutService {
   private CheckoutRepository checkoutRepository;
 
   public CheckoutResponseDTO checkout (Long reservaId, CheckoutRequestDTO checkoutRequestDTO) {
-
+    //
     Optional<Reserva> reservaOptional = reservaRepository.findById(reservaId);
 
     reservaService.checarReservaNaoExiste(reservaOptional);
 
     Reserva reserva = reservaOptional.get();
 
-    reserva.getQuarto().setDisponivel(true);
+    reserva.getQuarto().setDisponivel(true); // Salvando 2 entidades ao mesmo tempo
 
     reservaService.checarReservaConfirmada(reserva);
 
     reserva.setStatusReserva(StatusReserva.ENCERRADA);
 
     reservaRepository.save(reserva);
+    //
 
     Quarto quarto = quartoRepository.getReferenceById(reserva.getQuarto().getId());
 

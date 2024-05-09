@@ -1,7 +1,6 @@
 package com.andre.ReservaDeHotel.DTO;
 
 import com.andre.ReservaDeHotel.entity.Reserva;
-import com.andre.ReservaDeHotel.entity.enums.StatusReserva;
 import com.andre.ReservaDeHotel.entity.enums.TipoQuarto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReservaRequestDTO {
-
 
   private Long id;
   private Long userId;

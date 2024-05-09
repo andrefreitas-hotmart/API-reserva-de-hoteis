@@ -1,7 +1,7 @@
-package com.andre.ReservaDeHotel.utils;
+package com.andre.ReservaDeHotel.strategy;
 
 import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
-import com.andre.ReservaDeHotel.utils.interfaces.ValidacaoReservaStrategy;
+import com.andre.ReservaDeHotel.strategy.interfaces.ValidacaoReservaStrategy;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 

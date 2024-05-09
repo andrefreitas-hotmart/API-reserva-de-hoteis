@@ -1,4 +1,4 @@
-package com.andre.ReservaDeHotel.utils.interfaces;
+package com.andre.ReservaDeHotel.strategy.interfaces;
 
 import com.andre.ReservaDeHotel.DTO.ReservaRequestDTO;
 
